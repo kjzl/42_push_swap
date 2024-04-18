@@ -6,7 +6,7 @@
 /*   By: kwurster <kwurster@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 13:58:53 by kwurster          #+#    #+#             */
-/*   Updated: 2024/04/18 15:43:37 by kwurster         ###   ########.fr       */
+/*   Updated: 2024/04/18 17:49:00 by kwurster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,5 +51,8 @@ t_bool			_rr(t_stack *a, t_stack *b);
 t_bool			_rra(t_stack *a, t_stack *b);
 t_bool			_rrb(t_stack *a, t_stack *b);
 t_bool			_rrr(t_stack *a, t_stack *b);
+
+t_str			display_sort_op(t_sort_op op);
+t_bool			parse_sort_op(const char *str, t_sort_op *out);
 
 #endif

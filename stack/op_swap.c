@@ -6,7 +6,7 @@
 /*   By: kwurster <kwurster@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 14:09:49 by kwurster          #+#    #+#             */
-/*   Updated: 2024/04/18 15:32:39 by kwurster         ###   ########.fr       */
+/*   Updated: 2024/04/18 15:43:05 by kwurster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 /// @param a The stack to swap the top two elements of.
 /// @param b Unused.
 /// @return TRUE if the operation was successful, FALSE otherwise.
-t_bool	sa(t_stack *a, t_stack *b)
+t_bool	_sa(t_stack *a, t_stack *b)
 {
 	(void)b;
 	if (a->len < 2)
@@ -29,7 +29,7 @@ t_bool	sa(t_stack *a, t_stack *b)
 /// @param a Unused.
 /// @param b The stack to swap the top two elements of.
 /// @return TRUE if the operation was successful, FALSE otherwise.
-t_bool	sb(t_stack *a, t_stack *b)
+t_bool	_sb(t_stack *a, t_stack *b)
 {
 	(void)a;
 	if (b->len < 2)
@@ -42,10 +42,10 @@ t_bool	sb(t_stack *a, t_stack *b)
 /// @param a The stack to swap the top two elements of.
 /// @param b The stack to swap the top two elements of.
 /// @return TRUE if the operation was successful, FALSE otherwise.
-t_bool	ss(t_stack *a, t_stack *b)
+t_bool	_ss(t_stack *a, t_stack *b)
 {
 	t_bool	out;
 
-	out = sa(a, b);
-	return (sb(a, b) && out);
+	out = _sa(a, b);
+	return (_sb(a, b) && out);
 }

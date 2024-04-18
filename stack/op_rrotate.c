@@ -6,7 +6,7 @@
 /*   By: kwurster <kwurster@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 15:30:20 by kwurster          #+#    #+#             */
-/*   Updated: 2024/04/18 15:37:38 by kwurster         ###   ########.fr       */
+/*   Updated: 2024/04/18 15:43:37 by kwurster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 /// @param a The stack to rotate.
 /// @param b Unused.
 /// @return TRUE if the operation was successful, FALSE otherwise.
-t_bool	rra(t_stack *a, t_stack *b)
+t_bool	_rra(t_stack *a, t_stack *b)
 {
 	(void)b;
 	if (a->len < 2)
@@ -28,7 +28,7 @@ t_bool	rra(t_stack *a, t_stack *b)
 /// @param a Unused.
 /// @param b The stack to rotate.
 /// @return TRUE if the operation was successful, FALSE otherwise.
-t_bool	rrb(t_stack *a, t_stack *b)
+t_bool	_rrb(t_stack *a, t_stack *b)
 {
 	(void)a;
 	if (b->len < 2)
@@ -40,10 +40,10 @@ t_bool	rrb(t_stack *a, t_stack *b)
 /// @param a The stack to rotate.
 /// @param b The stack to rotate.
 /// @return TRUE if the operation was successful, FALSE otherwise.
-t_bool	rrr(t_stack *a, t_stack *b)
+t_bool	_rrr(t_stack *a, t_stack *b)
 {
 	t_bool	out;
 
-	out = rra(a, b);
-	return (rrb(a, b) && out);
+	out = _rra(a, b);
+	return (_rrb(a, b) && out);
 }

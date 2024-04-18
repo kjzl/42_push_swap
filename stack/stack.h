@@ -6,7 +6,7 @@
 /*   By: kwurster <kwurster@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 13:58:53 by kwurster          #+#    #+#             */
-/*   Updated: 2024/04/18 15:36:58 by kwurster         ###   ########.fr       */
+/*   Updated: 2024/04/18 15:43:37 by kwurster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,16 +40,16 @@ int				*stack_get_at(const t_vec *vec, size_t index);
 int				*stack_get_last(const t_vec *vec);
 
 t_bool			exec_sort_op(t_stack *a, t_stack *b, t_sort_op op);
-t_bool			sa(t_stack *a, t_stack *b);
-t_bool			sb(t_stack *a, t_stack *b);
-t_bool			ss(t_stack *a, t_stack *b);
-t_bool			pa(t_stack *a, t_stack *b);
-t_bool			pb(t_stack *a, t_stack *b);
-t_bool			ra(t_stack *a, t_stack *b);
-t_bool			rb(t_stack *a, t_stack *b);
-t_bool			rr(t_stack *a, t_stack *b);
-t_bool			rra(t_stack *a, t_stack *b);
-t_bool			rrb(t_stack *a, t_stack *b);
-t_bool			rrr(t_stack *a, t_stack *b);
+t_bool			_sa(t_stack *a, t_stack *b);
+t_bool			_sb(t_stack *a, t_stack *b);
+t_bool			_ss(t_stack *a, t_stack *b);
+t_bool			_pa(t_stack *a, t_stack *b);
+t_bool			_pb(t_stack *a, t_stack *b);
+t_bool			_ra(t_stack *a, t_stack *b);
+t_bool			_rb(t_stack *a, t_stack *b);
+t_bool			_rr(t_stack *a, t_stack *b);
+t_bool			_rra(t_stack *a, t_stack *b);
+t_bool			_rrb(t_stack *a, t_stack *b);
+t_bool			_rrr(t_stack *a, t_stack *b);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: kwurster <kwurster@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 14:16:20 by kwurster          #+#    #+#             */
-/*   Updated: 2024/04/18 15:28:16 by kwurster         ###   ########.fr       */
+/*   Updated: 2024/04/18 15:43:13 by kwurster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 /// @param a The stack to push to.
 /// @param b The stack to push from.
 /// @return TRUE if the operation was successful, FALSE otherwise.
-t_bool	pa(t_stack *a, t_stack *b)
+t_bool	_pa(t_stack *a, t_stack *b)
 {
 	if (b->len == 0)
 		return (FALSE);
@@ -29,7 +29,7 @@ t_bool	pa(t_stack *a, t_stack *b)
 /// @param a The stack to push from.
 /// @param b The stack to push to.
 /// @return TRUE if the operation was successful, FALSE otherwise.
-t_bool	pb(t_stack *a, t_stack *b)
+t_bool	_pb(t_stack *a, t_stack *b)
 {
 	if (a->len == 0)
 		return (FALSE);

@@ -1,36 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   stack.c                                            :+:      :+:    :+:   */
+/*   stack_serialize_util.h                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kwurster <kwurster@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/18 14:18:59 by kwurster          #+#    #+#             */
-/*   Updated: 2024/04/19 04:31:12 by kwurster         ###   ########.fr       */
+/*   Created: 2024/04/19 04:04:28 by kwurster          #+#    #+#             */
+/*   Updated: 2024/04/19 06:15:36 by kwurster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "stack.h"
 
-int	*stack_get(const t_vec *vec)
-{
-	return (vec_get(vec));
-}
-
-int	*stack_get_at(const t_vec *vec, size_t index)
-{
-	return (vec_get_at(vec, index));
-}
-
-int	*stack_get_last(const t_vec *vec)
-{
-	return (vec_get_last(vec));
-}
-
-t_bool	exec_sort_op(t_stack *a, t_stack *b, t_sort_op op)
-{
-	static t_sort_op_fn	op_fn[] = {_sa, _sb, _ss, _pa, _pb, _ra, _rb, _rr, _rra,
-			_rrb, _rrr};
-
-	return (op_fn[op](a, b));
-}
+int		stack_max(const t_stack *stack);
+int		stack_min(const t_stack *stack);
+int		int_width(int i);
+void	str_pad(t_str *str, size_t min_len, char c);
+void	map_itoa(const t_vec *from, t_vec *to, size_t i, int *min_str_width);
+t_bool	merge_stack_entries(t_vec a_pop, t_vec b_pop, t_str *out_str,
+			size_t columns_width);
+t_str	merge_stack_strs(t_vec *a_strs, t_vec *b_strs, size_t columns_width);

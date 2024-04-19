@@ -6,7 +6,7 @@
 /*   By: kwurster <kwurster@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 13:58:53 by kwurster          #+#    #+#             */
-/*   Updated: 2024/04/18 17:49:00 by kwurster         ###   ########.fr       */
+/*   Updated: 2024/04/19 06:21:31 by kwurster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,9 @@ typedef enum e_sort_op
 }				t_sort_op;
 
 typedef t_bool	(*t_sort_op_fn)(t_stack *a, t_stack *b);
+
+t_vec			parse_stack(const char *str);
+t_str			display_stacks(const t_stack *a, const t_stack *b);
 
 int				*stack_get(const t_vec *vec);
 int				*stack_get_at(const t_vec *vec, size_t index);

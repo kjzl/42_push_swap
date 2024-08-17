@@ -10,18 +10,18 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "stack.h"
+#include "../stack.h"
 
 /// @brief Pushes the top element of stack b to stack a.
 /// @param a The stack to push to.
 /// @param b The stack to push from.
 /// @return TRUE if the operation was successful, FALSE otherwise.
-t_bool	_pa(t_stack *a, t_stack *b)
+t_bool	pa(t_stack *a, t_stack *b)
 {
-	if (b->len == 0)
+	if (b->s.len == 0)
 		return (FALSE);
-	vec_push(a, vec_get_last(b));
-	vec_remove_last(b);
+	vec_push(&a->s, vec_get_last(&b->s));
+	vec_remove_last(&b->s);
 	return (TRUE);
 }
 
@@ -29,11 +29,11 @@ t_bool	_pa(t_stack *a, t_stack *b)
 /// @param a The stack to push from.
 /// @param b The stack to push to.
 /// @return TRUE if the operation was successful, FALSE otherwise.
-t_bool	_pb(t_stack *a, t_stack *b)
+t_bool	pb(t_stack *a, t_stack *b)
 {
-	if (a->len == 0)
+	if (a->s.len == 0)
 		return (FALSE);
-	vec_push(b, vec_get_last(a));
-	vec_remove_last(a);
+	vec_push(&b->s, vec_get_last(&a->s));
+	vec_remove_last(&a->s);
 	return (TRUE);
 }

@@ -12,12 +12,12 @@
 
 #include "stack.h"
 
-t_str	display_sort_op(t_sort_op op)
+t_str_slice	display_sort_op(t_sort_op op)
 {
 	static char	*op_strs[] = {"sa", "sb", "ss", "pa", "pb", "ra", "rb", "rr",
-		"rra", "rrb", "rrr"};
+			"rra", "rrb", "rrr"};
 
-	return (str_new_clone(op_strs[op]));
+	return (cstr_view(op_strs[op]));
 }
 
 t_bool	parse_sort_op(const char *str, t_sort_op *out)

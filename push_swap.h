@@ -12,8 +12,8 @@
 
 #ifndef PUSH_SWAP_H
 # define PUSH_SWAP_H
+# pragma once
 
-# include "libft/libft.h"
 # include "stack/stack.h"
 
 typedef enum e_exit_status

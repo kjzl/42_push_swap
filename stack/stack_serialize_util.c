@@ -12,18 +12,18 @@
 
 #include "stack.h"
 
-static void	iter_max(t_stack *stack, size_t i, int *max)
+static void	iter_max(t_stack *stack, size_t i, int32_t *max)
 {
-	int	at_i;
+	int32_t	at_i;
 
 	at_i = *stack_get_at(stack, i);
 	if (at_i > *max)
 		*max = at_i;
 }
 
-static void	iter_min(t_stack *stack, size_t i, int *min)
+static void	iter_min(t_stack *stack, size_t i, int32_t *min)
 {
-	int	at_i;
+	int32_t	at_i;
 
 	at_i = *stack_get_at(stack, i);
 	if (at_i < *min)
@@ -34,9 +34,9 @@ static void	iter_min(t_stack *stack, size_t i, int *min)
 /// @param stack The stack.
 /// @return The maximum value.
 /// @note If the stack is empty, the return value is 0.
-int	stack_max(const t_stack *stack)
+int32_t	stack_max(const t_stack *stack)
 {
-	int	max;
+	int32_t	max;
 
 	max = 0;
 	vec_iteri(stack, iter_max, &max);
@@ -47,20 +47,20 @@ int	stack_max(const t_stack *stack)
 /// @param stack The stack.
 /// @return The minimum value.
 /// @note If the stack is empty, the return value is 0.
-int	stack_min(const t_stack *stack)
+int32_t	stack_min(const t_stack *stack)
 {
-	int	min;
+	int32_t	min;
 
 	min = 0;
 	vec_iteri(stack, iter_min, &min);
 	return (min);
 }
 
-int	int_width(int i)
+int32_t	int_width(int32_t i)
 {
 	t_str	to_str;
 
-	to_str = str_itoa(i, str_base10());
+	to_str = str_itoa(i, base10());
 	if (to_str.heap)
 		free(to_str._capacity);
 	return (to_str.len);

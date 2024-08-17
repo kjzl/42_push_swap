@@ -13,7 +13,7 @@
 #include "push_swap.h"
 #include <stdlib.h>
 
-int	main(int argc, char **argv)
+int32_t	main(int32_t argc, char **argv)
 {
 	t_vec	stack_a;
 	t_vec	stack_b;
@@ -21,12 +21,12 @@ int	main(int argc, char **argv)
 
 	if (argc == 2)
 	{
-		stack_a = parse_stack(argv[1]);
+		stack_a = parse_stack_str(cstr_view(argv[1]));
 		if (stack_a.mem_err)
 			exit_status(status_err_malloc);
 		if (stack_a.len == 0)
 			exit_status(status_err_parse_arg);
-		stack_b = vec_empty_with_capacity(sizeof(int), stack_a.len);
+		stack_b = vec_empty_with_capacity(sizeof(int32_t), stack_a.len);
 		if (stack_a.mem_err)
 			exit_status(status_err_malloc);
 		stacks_display = display_stacks(&stack_a, &stack_b);

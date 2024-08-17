@@ -17,7 +17,7 @@ t_str	display_stacks(const t_stack *a, const t_stack *b)
 {
 	t_vec	a_strs;
 	t_vec	b_strs;
-	int		columns_width;
+	int32_t		columns_width;
 	t_str	tmp;
 
 	columns_width = ft_umax(int_width(stack_max(a)), int_width(stack_max(b)));

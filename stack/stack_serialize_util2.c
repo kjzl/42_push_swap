@@ -18,7 +18,7 @@ void	str_pad(t_str *str, size_t min_len, char c)
 		str_insertn(str, 0, c, min_len - str->len);
 }
 
-void	map_itoa(const t_vec *from, t_vec *to, size_t i, int *min_str_width)
+void	map_itoa(const t_vec *from, t_vec *to, size_t i, int32_t *min_str_width)
 {
 	t_str	*str_to;
 

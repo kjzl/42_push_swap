@@ -14,48 +14,36 @@
 
 t_bool	sa(t_stack *a)
 {
-	if (a->s.len < 2)
+	if (a->len < 2)
 		return (FALSE);
-	vec_swap_at(&a->s, a->s.len - 1, &a->s, a->s.len - 2);
+	node_swapv(a->head, a->head->next);
+	print_sort_op(op_sa);
 	return (TRUE);
-}
-
-/// @brief Swaps the top two elements of stack a.
-/// @param a The stack to swap the top two elements of.
-/// @param b Unused.
-/// @return TRUE if the operation was successful, FALSE otherwise.
-t_bool	_sa(t_stack *a, t_stack *b)
-{
-	(void)b;
-	return (sa(a));
 }
 
 t_bool	sb(t_stack *b)
 {
-	if (b->s.len < 2)
+	if (b->len < 2)
 		return (FALSE);
-	vec_swap_at(&b->s, b->s.len - 1, &b->s, b->s.len - 2);
+	node_swapv(b->head, b->head->next);
+	print_sort_op(op_sb);
 	return (TRUE);
 }
 
-/// @brief Swaps the top two elements of stack b.
-/// @param a Unused.
-/// @param b The stack to swap the top two elements of.
-/// @return TRUE if the operation was successful, FALSE otherwise.
-t_bool	_sb(t_stack *a, t_stack *b)
+t_bool	sx(t_stack *s)
 {
-	(void)a;
-	return (sb(b));
+	if (s->id == stack_a)
+		return (sa(s));
+	else
+		return (sb(s));
 }
 
-/// @brief Swaps the top two elements of stack a and b.
-/// @param a The stack to swap the top two elements of.
-/// @param b The stack to swap the top two elements of.
-/// @return TRUE if the operation was successful, FALSE otherwise.
-t_bool	ss(t_stack *a, t_stack *b)
+t_bool	ss(t_stack *s1, t_stack *s2)
 {
-	t_bool	out;
-
-	out = sa(a);
-	return (sb(b) && out);
+	if (s1->len < 2 || s2->len < 2)
+		return (FALSE);
+	node_swapv(s1->head, s1->head->next);
+	node_swapv(s2->head, s2->head->next);
+	print_sort_op(op_ss);
+	return (TRUE);
 }

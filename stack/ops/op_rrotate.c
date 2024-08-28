@@ -10,40 +10,52 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "stack.h"
+#include "../stack.h"
 
-/// @brief Rotates stack a in reverse by shifting down all elements by one.
-/// @param a The stack to rotate.
-/// @param b Unused.
-/// @return TRUE if the operation was successful, FALSE otherwise.
-t_bool	_rra(t_stack *a, t_stack *b)
+t_bool	rra(t_stack *a)
 {
-	(void)b;
 	if (a->len < 2)
 		return (FALSE);
-	return (vec_rrotate(a, 1));
+	stack_rrotate(a);
+	print_sort_op(op_rra);
+	return (TRUE);
 }
 
-/// @brief Rotates stack b in reverse by shifting down all elements by one.
-/// @param a Unused.
-/// @param b The stack to rotate.
-/// @return TRUE if the operation was successful, FALSE otherwise.
-t_bool	_rrb(t_stack *a, t_stack *b)
+t_bool	rrb(t_stack *b)
 {
-	(void)a;
 	if (b->len < 2)
 		return (FALSE);
-	return (vec_rrotate(b, 1));
+	stack_rrotate(b);
+	print_sort_op(op_rrb);
+	return (TRUE);
 }
 
-/// @brief Rotates stack a and b in reverse by shifting down all elements by one
-/// @param a The stack to rotate.
-/// @param b The stack to rotate.
-/// @return TRUE if the operation was successful, FALSE otherwise.
-t_bool	_rrr(t_stack *a, t_stack *b)
+t_bool	rrx(t_stack *s)
 {
-	t_bool	out;
+	if (s->id == stack_a)
+		return (rra(s));
+	else
+		return (rrb(s));
+}
 
-	out = _rra(a, b);
-	return (_rrb(a, b) && out);
+void	rrx_n(t_stack *s, size_t n)
+{
+	while (n--)
+		rrx(s);
+}
+
+t_bool	rrr(t_stack *s1, t_stack *s2)
+{
+	if (s1->len < 2 || s2->len < 2)
+		return (FALSE);
+	stack_rrotate(s1);
+	stack_rrotate(s2);
+	print_sort_op(op_rrr);
+	return (TRUE);
+}
+
+void	rrr_n(t_stack *s1, t_stack *s2, size_t n)
+{
+	while (n--)
+		rrr(s1, s2);
 }

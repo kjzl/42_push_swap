@@ -10,41 +10,45 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "stack.h"
+#include "../stack.h"
+#include "../../libft/libft.h"
 
-t_str_slice	display_sort_op(t_sort_op op)
+const char	*sort_op_str(t_sort_op op)
 {
-	static char	*op_strs[] = {"sa", "sb", "ss", "pa", "pb", "ra", "rb", "rr",
+	static const char * const	op_strs[] = {"sa", "sb", "ss", "pa", "pb", "ra", "rb", "rr",
 			"rra", "rrb", "rrr"};
 
-	return (cstr_view(op_strs[op]));
+	return (op_strs[op]);
 }
 
-t_bool	parse_sort_op(const char *str, t_sort_op *out)
+void	print_sort_op(t_sort_op op)
 {
-	if (ft_strncmp(str, "sa", 3) == 0)
-		*out = sa;
-	else if (ft_strncmp(str, "sb", 3) == 0)
-		*out = sb;
-	else if (ft_strncmp(str, "ss", 3) == 0)
-		*out = ss;
-	else if (ft_strncmp(str, "pa", 3) == 0)
-		*out = pa;
-	else if (ft_strncmp(str, "pb", 3) == 0)
-		*out = pb;
-	else if (ft_strncmp(str, "ra", 3) == 0)
-		*out = ra;
-	else if (ft_strncmp(str, "rb", 3) == 0)
-		*out = rb;
-	else if (ft_strncmp(str, "rr", 3) == 0)
-		*out = rr;
-	else if (ft_strncmp(str, "rra", 4) == 0)
-		*out = rra;
-	else if (ft_strncmp(str, "rrb", 4) == 0)
-		*out = rrb;
-	else if (ft_strncmp(str, "rrr", 4) == 0)
-		*out = rrr;
-	else
+	ft_putendl_fd(sort_op_str(op), STDOUT);
+}
+
+t_bool	sort_op_parse(t_str_slice str, t_sort_op *out)
+{
+	static const uint8_t	hash_table[1 << 8] = {
+		[2 + ((2 * 's' - 'a' + 0) % (1 << 6))] = op_sa,
+		[2 + ((2 * 's' - 'b' + 0) % (1 << 6))] = op_sb,
+		[2 + ((2 * 's' - 's' + 0) % (1 << 6))] = op_ss,
+		[2 + ((2 * 'p' - 'a' + 0) % (1 << 6))] = op_pa,
+		[2 + ((2 * 'p' - 'b' + 0) % (1 << 6))] = op_pb,
+		[2 + ((2 * 'r' - 'a' + 0) % (1 << 6))] = op_ra,
+		[2 + ((2 * 'r' - 'b' + 0) % (1 << 6))] = op_rb,
+		[2 + ((2 * 'r' - 'r' + 0) % (1 << 6))] = op_rr,
+		[3 + ((2 * 'r' - 'r' + 'a') % (1 << 6))] = op_rra,
+		[3 + ((2 * 'r' - 'r' + 'b') % (1 << 6))] = op_rrb,
+		[3 + ((2 * 'r' - 'r' + 'r') % (1 << 6))] = op_rrr
+	};
+	uint8_t					op;
+
+	if (str.len < 2)
 		return (FALSE);
+	op = hash_table[str.len + (2 * str.str[0] - str.str[1]
+		+ ft_isalpha(str.str[2]) * str.str[2]) % (1 << 6)];
+	if (op == 0 || ft_strncmp(str.str, sort_op_str((t_sort_op)op), str.len))
+		return (FALSE);
+	*out = (t_sort_op)op;
 	return (TRUE);
 }

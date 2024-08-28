@@ -16,15 +16,17 @@
 
 # include "stack/stack.h"
 
-typedef enum e_exit_status
+/// @brief The main state for the push_swap program.
+typedef struct s_ps
 {
-	status_ok,
-	status_err,
-	status_err_malloc,
-	status_err_args,
-	status_err_parse_arg,
-}		t_exit_status;
+	t_stack	a;
+	t_stack	b;
+}			t_ps;
 
-void	exit_status(t_exit_status status);
+void	sort3_a_start(t_ps *ps, uint32_t max);
+void	chunk_sort2(t_ps *ps, t_chunk *chunk);
+void	chunk_sort3(t_ps *ps, t_chunk *chunk);
+void	sort(t_ps *ps);
+void	chunk_push(t_ps *ps, t_chunk *from, t_chunk *to);
 
 #endif

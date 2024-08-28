@@ -10,32 +10,107 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "ft_types.h"
+#include "libft.h"
 #include "push_swap.h"
-#include <stdlib.h>
+#include "stack/stack.h"
 
-int32_t	main(int32_t argc, char **argv)
+// void	stack_print(t_stack *s)
+// {
+// 	size_t	i;
+// 	t_node	*node;
+// 	const char *stack_name;
+
+// 	i = 0;
+// 	node = s->head;
+// 	if (s->id == stack_a)
+// 		stack_name = "A";
+// 	else
+// 		stack_name = "B";
+
+// 	// ft_printf_fd(STDERR, "%s: len = %d\n", stack_name, (int32_t)s->len);
+// 	while (i < s->len)
+// 	{
+// 		// ft_printf_fd(STDERR, "%d\n", node->val);
+// 		node = node->next;
+// 		i++;
+// 	}
+// }
+
+t_bool	stacks_finished(t_stack *a, t_stack *b)
 {
-	t_vec	stack_a;
-	t_vec	stack_b;
-	t_str	stacks_display;
+	int32_t	prev_val;
+	t_node	*node;
 
-	if (argc == 2)
+	(void)b;
+	//if (b->len != 0)
+	//	ft_printf_fd(STDERR, "STACK B NOT EMPTY!!");
+	prev_val = a->head->val;
+	node = a->head->next;
+	while (node != a->head)
 	{
-		stack_a = parse_stack_str(cstr_view(argv[1]));
-		if (stack_a.mem_err)
-			exit_status(status_err_malloc);
-		if (stack_a.len == 0)
-			exit_status(status_err_parse_arg);
-		stack_b = vec_empty_with_capacity(sizeof(int32_t), stack_a.len);
-		if (stack_a.mem_err)
-			exit_status(status_err_malloc);
-		stacks_display = display_stacks(&stack_a, &stack_b);
-		ft_putstr_fd(str_get(&stacks_display), 1);
-		str_destroy(&stacks_display);
-		// TODO
-		// sort(&stack_a, &stack_b);
+		if (node->val < prev_val)
+			return (FALSE);
+		prev_val = node->val;
+		node = node->next;
 	}
+	return (TRUE);
+}
+
+/// Checks if the Stack contains duplicates and returns the index of the first duplicate.
+int32_t	stack_checkdup(t_stack *s)
+{
+	t_node	*current;
+	t_node	*runner;
+	size_t	index;
+	size_t	runner_index;
+
+	current = s->head;
+	index = 0;
+	while (index < s->len)
+	{
+		runner = current->next;
+		runner_index = index + 1;
+		while (runner != s->head)
+		{
+			if (current->val == runner->val)
+				return (runner_index);
+			runner = runner->next;
+			runner_index++;
+		}
+		current = current->next;
+		index++;
+	}
+	return (-1);
+}
+
+int32_t	main(int32_t argc, const char **argv)
+{
+	t_ps	ps;
+
+	ps.b = stack_new(stack_b);
+	if (argc == 2)
+		ps.a = parse_stack_str(cstr_view(argv[1]));
+	else if (argc > 2)
+		ps.a = parse_stack(argv + 1, argc - 1);
 	else
-		exit_status(status_err_args);
-	return (status_ok);
+		return (0);
+	if (ps.a.len < 2)
+		return (1);
+	if (stack_checkdup(&ps.a) != -1)
+	{
+		ft_printf_fd(STDERR, "Error\nDuplicate value at index %d.\n", stack_checkdup(&ps.a));
+		return (1);
+	}
+	//ft_printf_fd(STDERR, "INPUT:\n");
+	// stack_print(&ps.a);
+	sort(&ps);
+	// ft_printf_fd(STDERR, "NOT SORTED!!\nNOT SORTED!!\n");
+	if (!stacks_finished(&ps.a, &ps.b))
+	{
+		// stack_print(&ps.a);
+		// stack_print(&ps.b);
+		return (1);
+	}
+	return (0);
 }

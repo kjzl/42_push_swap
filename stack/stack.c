@@ -11,148 +11,91 @@
 /* ************************************************************************** */
 
 #include "stack.h"
-#include <stdlib.h>
+#include "ft_types.h"
+#include "libft.h"
 
-const int32_t	*stack_get(const t_stack *stack)
+t_bool	stack_valid(t_stack *s, const char *msg)
 {
-	return (vec_get(&stack->s));
-}
-
-const int32_t	*stack_get_at(const t_stack *stack, size_t index)
-{
-	return (vec_get_at(&stack->s, index));
-}
-
-const int32_t	*stack_get_top(const t_stack *stack)
-{
-	return (vec_get_last(&stack->s));
-}
-
-const int32_t	*stack_get_bottom(const t_stack *stack)
-{
-	return (vec_get(&stack->s));
-}
-
-t_bool	exec_sort_op(t_stack *a, t_stack *b, t_sort_op op)
-{
-	static t_sort_op_fn	op_fn[] = {_sa, _sb, ss, pa, pb, _ra, _rb, _rr, _rra,
-			_rrb, _rrr};
-
-	return (op_fn[op](a, b));
-}
-
-void	stack_push(t_stack *stack, t_node *node)
-{
-	t_node	*old_head;
-
-	old_head = stack->head;
-	stack->head = node;
-	if (old_head == 0)
-	{
-		stack->head->next = stack->head;
-		stack->head->prev = stack->head;
-		return ;
-	}
-	stack->head->next = old_head;
-	stack->head->prev = old_head->prev;
-	old_head->prev = stack->head;
-	if (old_head->next == old_head)
-		old_head->next = stack->head;
-}
-
-t_bool	stack_pushv(t_stack *stack, int32_t val)
-{
+	t_node	*prev;
 	t_node	*node;
+	size_t	i;
 
-	node = malloc(sizeof(t_node));
-	if (node == 0)
-		return (FALSE);
-	node->val = val;
-	stack_push(stack, node);
-	return (TRUE);
-}
-
-t_node	*stack_pop(t_stack *stack)
-{
-	t_node	*old_head;
-
-	if (stack->head == 0)
-		return (0);
-	old_head = stack->head;
-	if (old_head->next == old_head)
-		stack->head = 0;
-	else
+	i = 0;
+	(void)msg;
+	node = s->head;
+	prev = 0;
+	if (s->head != 0)
 	{
-		stack->head = stack->head->next;
-		stack->head->prev = old_head->prev;
-		old_head->prev->next = stack->head;
+		while (TRUE)
+		{
+			if (node == s->head && prev != 0)
+				break;
+			// if (i == s->len)
+				//ft_printf_fd(STDERR, "%s: i = %d; s->len shorter than actual length\n", msg, (int32_t)i);
+			// if (i == s->len*2)
+			// {
+				//ft_printf_fd(STDERR, "%s: i = %d; ABORTING LOOP\n", msg, (int32_t)i);
+			// 	return (FALSE);
+			// }
+			prev = node;
+			node = node->next;
+			i++;
+			// if (prev != node->prev)
+				//ft_printf_fd(STDERR, "%s: i = %d; prev != node->prev\n", msg, (int32_t)i);
+		}
 	}
-	old_head->next = 0;
-	old_head->prev = 0;
-	return (old_head);
-}
-
-/// @warning will segfault if the stack is empty.
-int32_t stack_popv(t_stack *stack)
-{
-	t_node	*node;
-	int32_t	val;
-
-	node = stack_pop(stack);
-	val = node->val;
-	free(node);
-	return (val);
-}
-
-// TODO (this is ai generated code)
-t_bool	stack_swap_nodes(t_node *a, t_node *b)
-{
-
-	if (a == b)
+	if (i != s->len)
+	{
+		//ft_printf_fd(STDERR, "%s: i = %d; i != s->len\n", msg, (int32_t)i);
 		return (FALSE);
-	a->prev->next = b;
-	a->next->prev = b;
-	b->prev->next = a;
-	b->next->prev = a;
-	a->prev = b->prev;
-	a->next = b->next;
-	b->prev = a->prev;
-	b->next = a->next;
+	}
 	return (TRUE);
 }
 
-t_bool	stack_rotate(t_stack *stack)
-{
-	if (stack->head == 0)
-		return (FALSE);
-	stack->head = stack->head->next;
-	return (TRUE);
-}
+// t_bool	exec_sort_op(t_stack *a, t_stack *b, t_sort_op op)
+// {
+// 	static t_sort_op_fn	op_fn[] = {_sa, _sb, ss, pa, pb, _ra, _rb, _rr, _rra,
+// 			_rrb, _rrr};
 
-t_bool	stack_rrotate(t_stack *stack)
+// 	return (op_fn[op](a, b));
+// }
+
+// t_entry	entry_by_val(t_stack *s, uint32_t val)
+// {
+// 	size_t	i;
+// 	int32_t	*arr;
+// 	while (i < s->s.len)
+// 	{
+// 		if (arr[i] == val)
+// 			return ((t_entry){i, val});
+// 		i++;
+// 	}
+// }
+//
+
+t_entry	entry_at(t_stack *s, size_t i)
 {
-	if (stack->head == 0)
-		return (FALSE);
-	stack->head = stack->head->prev;
-	return (TRUE);
+	return ((t_entry){i, node_at(s, i)});
 }
 
 /// UB if the stack is empty.
 t_entry	stack_min(t_stack *s)
 {
-	int32_t	min;
+	t_node	*min;
 	size_t	min_i;
 	size_t	i;
-	int32_t	*arr;
+	t_node	*node;
 
-	arr = stack_get(&s->s);
-	min = *arr;
+	node = s->head;
+	min = node;
+	min_i = 0;
 	i = 1;
-	while (i < s->s.len)
+	while (i < s->len)
 	{
-		if (arr[i] < min)
+		node = node->next;
+		if (node->val < min->val)
 		{
-			min = arr[i];
+			min = node;
 			min_i = i;
 		}
 		i++;
@@ -163,19 +106,21 @@ t_entry	stack_min(t_stack *s)
 /// UB if the stack is empty.
 t_entry	stack_max(t_stack *s)
 {
-	int32_t	max;
+	t_node	*max;
 	size_t	max_i;
 	size_t	i;
-	int32_t	*arr;
+	t_node	*node;
 
-	arr = stack_get(s);
-	max = *arr;
+	node = s->head;
+	max = node;
+	max_i = 0;
 	i = 1;
-	while (i < s->s.len)
+	while (i < s->len)
 	{
-		if (arr[i] > max)
+		node = node->next;
+		if (node->val > max->val)
 		{
-			max = arr[i];
+			max = node;
 			max_i = i;
 		}
 		i++;
@@ -183,55 +128,337 @@ t_entry	stack_max(t_stack *s)
 	return ((t_entry){max_i, max});
 }
 
-t_entry	entry_by_val(t_stack *s, uint32_t val)
+void	stack_min2(t_stack *s, t_entry *min1, t_entry *min2)
 {
 	size_t	i;
-	int32_t	*arr;
-	while (i < s->s.len)
+	t_node	*node;
+
+	node = s->head->next;
+	if (s->head->val < s->head->next->val)
 	{
-		if (arr[i] == val)
-			return ((t_entry){i, val});
+		*min1 = (t_entry){0, s->head};
+		*min2 = (t_entry){1, s->head->next};
+	}
+	else
+	{
+		*min1 = (t_entry){1, s->head->next};
+		*min2 = (t_entry){0, s->head};
+	}
+	i = 2;
+	while (i < s->len)
+	{
+		node = node->next;
+		if (node->val < min1->node->val)
+		{
+			*min2 = *min1;
+			*min1 = (t_entry){i, node};
+		}
+		else if (node->val < min2->node->val)
+			*min2 = (t_entry){i, node};
 		i++;
 	}
 }
 
-t_entry	entry_at(t_stack *s, size_t i)
+void	stack_max2(t_stack *s, t_entry *max1, t_entry *max2)
 {
-	return ((t_entry){i, *stack_get_at(s, i)});
+	size_t	i;
+	t_node	*node;
+
+	node = s->head->next;
+	if (s->head->val > s->head->next->val)
+	{
+		*max1 = (t_entry){0, s->head};
+		*max2 = (t_entry){1, s->head->next};
+	}
+	else
+	{
+		*max1 = (t_entry){1, s->head->next};
+		*max2 = (t_entry){0, s->head};
+	}
+	i = 2;
+	while (i < s->len)
+	{
+		node = node->next;
+		if (node->val > max1->node->val)
+		{
+			*max2 = *max1;
+			*max1 = (t_entry){i, node};
+		}
+		else if (node->val > max2->node->val)
+			*max2 = (t_entry){i, node};
+		i++;
+	}
 }
 
-t_bool	stack_is_sorted(t_stack *s)
+t_bool	stack_is_sorted(t_stack *s, t_bool at_head, size_t n)
 {
-	size_t	max_i;
+	t_node	*node;
 	size_t	i;
-	int32_t	*arr;
 
 	if (s->len < 2)
 		return (TRUE);
-	max_i = stack_max(s).index;
+	if (at_head)
+		node = s->head;
+	else if (s->id == stack_a)
+		node = stack_min(s).node;
+	else
+		node = stack_max(s).node;
 	i = 0;
-	arr = stack_get(s);
-	while (i < s->len)
+	while (i < s->len - 1 && i < n)
 	{
-		if (arr[i] < arr[i + 1])
+		if (s->id == stack_a && node->val > node->next->val)
 			return (FALSE);
+		if (s->id == stack_b && node->val < node->next->val)
+			return (FALSE);
+		node = node->next;
 		i++;
-		if (i == max_i)
-			i++;
 	}
-	return (max_i == s->len - 1 || arr[s->len - 1] > arr[0]);
+	return (TRUE);
 }
 
-// TODO create methods sa/sb/ss/pa/pb/ra/rb/rr/rra/rrb/rrr for just one t_stack and grab stack_id from struct
-void	stack_sort3(t_stack *a, t_stack *b)
+/// @brief Returns the distance of the node from the top of the stack.
+size_t	node_dist(t_entry n)
 {
-	size_t	max_i;
-	size_t	min_i;
-	size_t	i;
+	return (n.index);
+}
 
-	if (a-> < 3)
+/// @brief Returns the distance of the node from the top of the stack
+/// when traversing the stack in reverse order.
+size_t	node_rdist(t_stack *s, t_entry n)
+{
+	if (n.index == 0)
+		return (0);
+	return (s->len - n.index);
+}
+
+void	stack_sort3(t_stack *s)
+{
+	t_entry	max;
+	int32_t	maxv;
+
+	if (s->len != 3)
 		return ;
-	max_i = stack_max(s).index;
-	min_i = stack_min(s).index;
+	max = stack_max(s);
+	maxv = max.node->val;
+	if (max.node->next != stack_min(s).node)
+		sx(s);
+	if (s->head->val == maxv)
+		rx(s);
+	else if (s->head->next->val == maxv)
+		rrx(s);
+}
 
+/// Returns wheter to reverse rotate the stack to push both of the elements
+// TODO could be optimized to reduce max ops in sort5 from 9 to 8
+// by not using a pair of min or max but rather use absolute min and max together
+// this would probably need quite a bit of refactoring
+static t_bool	stack_min2_or_max2(t_stack *s, t_entry *min1, t_entry *min2)
+{
+	size_t	min_dist;
+	size_t	min_rdist;
+	size_t	max_dist;
+	size_t	max_rdist;
+
+	stack_min2(s, min1, min2);
+	min_dist = usizemax(node_dist(*min1), node_dist(*min2));
+	min_rdist = usizemax(node_rdist(s, *min1), node_rdist(s, *min2));
+	stack_max2(s, min1, min2);
+	max_dist = usizemax(node_dist(*min1), node_dist(*min2)) + 2;
+	max_rdist = usizemax(node_rdist(s, *min1), node_rdist(s, *min2)) + 2;
+	if (usizemin(max_dist, max_rdist) < usizemin(min_dist, min_rdist))
+		return max_dist > max_rdist;
+	stack_min2(s, min1, min2);
+	return min_dist > min_rdist;
+}
+
+void	stack_push_smallest_two(t_stack *from, t_stack *to)
+{
+	t_entry	min1;
+	t_entry	min2;
+	size_t	pushed;
+	t_bool	rev_rot;
+
+	if (from->len < 2)
+		return ;
+	rev_rot = stack_min2_or_max2(from, &min1, &min2);
+	//ft_printf("min1: %d\n", min1.node->val);
+	//ft_printf("min2: %d\n", min2.node->val);
+	pushed = 0;
+	while (pushed < 2)
+	{
+		if (from->head == min1.node || from->head == min2.node)
+		{
+			px(from, to);
+			pushed++;
+			continue;
+		}
+		if (rev_rot)
+			rrx(from);
+		else
+			rx(from);
+		stack_valid(from, "stack_push_smallest_two.1");
+		stack_valid(to, "stack_push_smallest_two.2");
+	}
+	// if (to->head->val < to->head->next->val)
+	// 	sx(to);
+	// stack_valid(from, "stack_push_smallest_two.3");
+	// stack_valid(to, "stack_push_smallest_two.4");
+}
+
+static void	stack_sort5_sort3(t_stack *to_sort, t_stack *other)
+{
+	if (stack_max(to_sort).node->next != stack_min(to_sort).node)
+	{
+		if (other->head->val < other->head->next->val)
+			ss(to_sort, other);
+		else
+			sx(to_sort);
+	}
+	if (to_sort->head->val == stack_max(to_sort).node->val)
+	{
+		if (other->head->val < other->head->next->val && other->len == 2)
+			rr(to_sort, other);
+		else
+			rx(to_sort);
+	}
+	else if (to_sort->head->next->val == stack_max(to_sort).node->val)
+	{
+		if (other->head->val < other->head->next->val && other->len == 2)
+			rrr(to_sort, other);
+		else
+			rrx(to_sort);
+	}
+}
+
+// t_sorted_slice stack_longest_sorted_slice(t_stack *s)
+// {
+// 	t_sorted_slice	slice;
+// 	t_node			*runner;
+// 	size_t			i;
+
+// 	slice = (t_sorted_slice){.len = 1, .index = 0, .start = s->head, .end = s->head};
+// 	runner = s->head->next;
+// 	i = 1;
+// 	while (i < s->len)
+// 	{
+// 		if (slice.end == runner->prev && runner->val > )
+// 		if (runner->val > runner->prev->val)
+// 		{
+// 			if (slice.len < i - slice.index + 1)
+// 				slice = (t_sorted_slice){.len = i - slice.index + 1, .index = slice.index, .node = slice.node};
+// 		}
+// 		else
+// 		{
+// 			slice = (t_sorted_slice){.len = 1, .index = i, .node = runner};
+// 		}
+// 		runner = runner->next;
+// 		i++;
+// 	}
+// }
+
+void	stack_rotate_sorted(t_stack *s)
+{
+	t_entry	min;
+
+	if (s->len < 2)
+		return ;
+	min = stack_min(s);
+	if (node_dist(min) > node_rdist(s, min))
+		while (s->head != min.node)
+			rrx(s);
+	else
+		while (s->head != min.node)
+			rx(s);
+}
+
+t_bool	stack_easy_sort(t_stack *s)
+{
+	if (s->len < 2)
+		return TRUE;
+	else if (s->len == 2)
+		stack_sort2(s);
+	else if (s->len == 3)
+		stack_sort3(s);
+	else if (stack_is_sorted(s, FALSE, s->len))
+		stack_rotate_sorted(s);
+	else
+		return FALSE;
+	return TRUE;
+}
+
+void	stack_sort5(t_stack *to_sort, t_stack *other)
+{
+	if (to_sort->len != 5)
+		return ;
+	if (stack_is_sorted(to_sort, FALSE, to_sort->len))
+		return (stack_rotate_sorted(to_sort));
+	stack_push_smallest_two(to_sort, other);
+	stack_sort5_sort3(to_sort, other);
+	if (other->head->val < other->head->next->val)
+		sx(other);
+	px(other, to_sort);
+	px(other, to_sort);
+	if (stack_max(to_sort).index != 4)
+	{
+		rx(to_sort);
+		rx(to_sort);
+	}
+}
+
+void	stack_sort2(t_stack *s)
+{
+	if (s->len != 2)
+		return ;
+	if (s->head->val > s->head->next->val)
+		sx(s);
+}
+
+// TODO maybe hardcode optimization for the one case in which this needs 6 ops
+void stack_sort4(t_stack *to_sort, t_stack *other)
+{
+	t_entry	max;
+	t_entry	push;
+	t_bool	rev_rot;
+
+	if (to_sort->len != 4)
+		return ;
+	max = stack_max(to_sort);
+	push = stack_min(to_sort);
+	if (usizemin(node_dist(max) + 1, node_rdist(to_sort, max) + 1)
+			< usizemin(node_dist(push), node_rdist(to_sort, push)))
+	{
+		rev_rot = (node_dist(max) > node_rdist(to_sort, max));
+		push = max;
+	}
+	else
+		rev_rot = (node_dist(push) > node_rdist(to_sort, push));
+	while (rev_rot && push.node != to_sort->head)
+		rrx(to_sort);
+	while (!rev_rot && push.node != to_sort->head)
+		rx(to_sort);
+	px(to_sort, other);
+	stack_sort3(to_sort);
+	px(other, to_sort);
+	if (stack_max(to_sort).index == 0)
+		rx(to_sort);
+}
+
+void	stack_sort_n(t_stack *to_sort, t_stack *other)
+{
+	(void)to_sort;
+	(void)other;
+}
+
+void	stack_sort(t_stack *to_sort, t_stack *other)
+{
+	if (to_sort->len == 2)
+		stack_sort2(to_sort);
+	else if (to_sort->len == 3)
+		stack_sort3(to_sort);
+	else if (to_sort->len == 4)
+		stack_sort4(to_sort, other);
+	else if (to_sort->len == 5)
+		stack_sort5(to_sort, other);
+	else
+		stack_sort_n(to_sort, other);
 }

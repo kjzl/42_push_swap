@@ -10,6 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "ft_types.h"
+#include "libft.h"
 #include "stack.h"
 
 static size_t	isspace_pattern(t_str_slice sl)
@@ -35,28 +37,33 @@ static void	map_atoi(const t_vec *from, t_vec *to, size_t i, void *err_i)
 			*(ssize_t *)err_i = i;
 }
 
-/// @brief Parses a string into a stack in reverse order.
+/// @brief Parses a string into a stack in reverse order (first will be top).
 /// @param str The string to parse.
 /// @return The stack or empty stack if input conversion failed.
 /// @warning Check the error flag for memory allocation errors.
 t_stack	parse_stack_str(t_str_slice sl)
 {
 	t_vec	split;
-	t_vec	stack_a;
+	t_vec	stack;
 	ssize_t	err_i;
 
 	err_i = -1;
 	split = strsl_split_where(sl, isspace_pattern);
-	stack_a = vec_mapi(&split, map_atoi, sizeof(int32_t), &err_i);
+	stack = vec_mapi(&split, map_atoi, sizeof(int32_t), &err_i);
+	// print the len of split and stack
+	// ft_printf_fd(STDERR, "split len: %d\n", (int32_t)split.len);
+	// ft_printf_fd(STDERR, "stack len: %d\n", (int32_t)stack.len);
 	if (err_i != -1)
 	{
-		vec_destroy(&stack_a, 0);
-		ft_printf_fd(2, "Expected a signed 32-bit decimal. "
-				"Error caused by argument at index %u", (uint32_t)err_i);
+		vec_destroy(&stack, 0);
+		ft_printf_fd(STDERR, "Error\nExpected a signed 32-bit decimal. "
+				"Error caused by argument at index %u.\n", (uint32_t)err_i);
 	}
+	else if (!split.mem_err && split.len < 2)
+		ft_printf_fd(STDERR, "Error\nThe stack must be at least of size 2.\n");
 	vec_destroy(&split, 0);
-	vec_reverse(&stack_a);
-	return (stack_a);
+	vec_reverse(&stack);
+	return (stack_from_vec(&stack, stack_a));
 }
 
 /// @brief Parses multiple base10 strings into a stack of u32.
@@ -65,24 +72,28 @@ t_stack	parse_stack_str(t_str_slice sl)
 /// @return The stack or empty stack if input conversion failed.
 t_stack	parse_stack(const char **strs, size_t strc)
 {
-	t_vec	stack_a;
+	t_vec	stack;
 	size_t	i;
 
-	stack_a = vec_empty_with_capacity(sizeof(int32_t), strc);
-	if (stack_a.mem_err)
-		return (stack_a);
+	stack = vec_empty_with_capacity(sizeof(int32_t), strc);
+	if (stack.mem_err)
+		return (stack_new(stack_a));
 	i = 0;
 	while (i < strc)
 	{
 		if (!strsl_atoi(cstr_view(strs[i]), base10(),
-			(int32_t *)vec_get_next_uninit_incr_len(&stack_a), OFB_ERROR))
+			(int32_t *)vec_get_next_uninit_incr_len(&stack), OFB_ERROR))
 			break;
+		// ft_printf_fd(STDERR, "%u: %d\n", i, *(int32_t *)vec_get_at(&stack, i));
 		i++;
 	}
+	vec_reverse(&stack);
+	// ft_printf_fd(STDERR, "(reversed) FIRST: %d\n", *(int32_t *)vec_get(&stack));
+	// ft_printf_fd(STDERR, "(reversed) LAST: %d\n", *(int32_t *)vec_get_last(&stack));
 	if (i == strc)
-		return (stack_a);
-	vec_destroy(&stack_a, 0);
-	ft_printf_fd(2, "Expected a signed 32-bit decimal. "
-			"Error caused by argument at index %u", (uint32_t)i);
-	return (stack_a);
+		return (stack_from_vec(&stack, stack_a));
+	vec_destroy(&stack, 0);
+	ft_printf_fd(STDERR, "Error\nExpected a signed 32-bit decimal. "
+			"Error caused by argument at index %u.\n", (uint32_t)i);
+	return (stack_new(stack_a));
 }

@@ -15,7 +15,7 @@
 
 const char	*sort_op_str(t_sort_op op)
 {
-	static const char *const	op_strs[] = {"sa", "sb", "ss", "pa", "pb", "ra",
+	static const char *const	op_strs[] = {"", "sa", "sb", "ss", "pa", "pb", "ra",
 		"rb", "rr", "rra", "rrb", "rrr"};
 
 	return (op_strs[op]);

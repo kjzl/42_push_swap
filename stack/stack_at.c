@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   stack_at.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: kwurster <kwurster@student.42berlin.de>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/09/01 17:36:35 by kwurster          #+#    #+#             */
+/*   Updated: 2024/09/01 17:36:36 by kwurster         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "stack.h"
 
 t_node	*node_at(const t_stack *stack, size_t index)
@@ -9,10 +21,10 @@ t_node	*node_at(const t_stack *stack, size_t index)
 		return (0);
 	i = 0;
 	node = stack->head;
-	while (index - i >= STACK_FAST_NEXT_INTERVAL)
+	while (index - i >= STACK_FAST_STEP)
 	{
 		node = stack->head->fast_next;
-		i += STACK_FAST_NEXT_INTERVAL;
+		i += STACK_FAST_STEP;
 	}
 	while (i < index)
 	{

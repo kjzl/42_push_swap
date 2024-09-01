@@ -1,5 +1,16 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   stack_push_pop.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: kwurster <kwurster@student.42berlin.de>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/09/01 17:36:49 by kwurster          #+#    #+#             */
+/*   Updated: 2024/09/01 17:59:23 by kwurster         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "stack.h"
-#include <stdint.h>
 #include <stdlib.h>
 
 void	stack_push(t_stack *stack, t_node *node)
@@ -21,8 +32,9 @@ void	stack_push(t_stack *stack, t_node *node)
 	old_head->prev = stack->head;
 	if (old_head->next == old_head)
 		old_head->next = stack->head;
-	if (stack->len > STACK_FAST_NEXT_INTERVAL)
-		node_at_slow(stack, stack->len - 1 - STACK_FAST_NEXT_INTERVAL)->fast_next = stack->head;
+	if (stack->len > STACK_FAST_STEP)
+		node_at_slow(stack, stack->len - 1 - STACK_FAST_STEP)->fast_next
+		= stack->head;
 }
 
 t_bool	stack_pushv(t_stack *stack, int32_t val, uint32_t target_pos)
@@ -58,18 +70,6 @@ t_node	*stack_pop(t_stack *stack)
 	old_head->prev = 0;
 	old_head->fast_next = 0;
 	return (old_head);
-}
-
-/// @warning will segfault if the stack is empty.
-int32_t stack_popv(t_stack *stack)
-{
-	t_node	*node;
-	int32_t	val;
-
-	node = stack_pop(stack);
-	val = node->val;
-	free(node);
-	return (val);
 }
 
 void	node_swapv(t_node *a, t_node *b)

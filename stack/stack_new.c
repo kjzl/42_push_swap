@@ -1,8 +1,17 @@
-#include "array/ft_array.h"
-#include "ft_types.h"
-#include "libft.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   stack_new.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: kwurster <kwurster@student.42berlin.de>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/09/01 17:36:45 by kwurster          #+#    #+#             */
+/*   Updated: 2024/09/01 18:05:03 by kwurster         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "stack.h"
-#include "vec/ft_vec.h"
+#include "../libft/libft.h"
 
 t_stack	stack_new(t_stack_id id)
 {
@@ -32,9 +41,7 @@ static void	sort_vec_and_set_target_pos(t_vec *vec, t_stack *stack)
 		return ;
 	i = 0;
 	data = vec_get(vec);
-	// ft_printf_fd(STDERR, "sort_vec_and_set_target_pos FIRST: %d\n", data[0]);
 	arr_qsort(data, vec->len, vec->element_size, cmp_i32);
-	// ft_printf_fd(STDERR, "sort_vec_and_set_target_pos FIRST: %d\n", data[0]);
 	while (i < vec->len)
 	{
 		node_by_val(stack, data[i])->target_pos = i;
@@ -61,7 +68,6 @@ t_stack	stack_from_vec(t_vec *vec, t_stack_id id)
 	i = 0;
 	while (i < vec->len)
 	{
-		// ft_printf_fd(STDERR, "stack_from_vec %u: %d\n", i, data[i]);
 		if (!stack_pushv(&stack, data[i], 0))
 		{
 			stack_clear(&stack);

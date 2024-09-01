@@ -6,7 +6,7 @@
 /*   By: kwurster <kwurster@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 15:30:20 by kwurster          #+#    #+#             */
-/*   Updated: 2024/04/18 15:43:37 by kwurster         ###   ########.fr       */
+/*   Updated: 2024/09/01 18:01:57 by kwurster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,12 +38,6 @@ t_bool	rrx(t_stack *s)
 		return (rrb(s));
 }
 
-void	rrx_n(t_stack *s, size_t n)
-{
-	while (n--)
-		rrx(s);
-}
-
 t_bool	rrr(t_stack *s1, t_stack *s2)
 {
 	if (s1->len < 2 || s2->len < 2)
@@ -52,10 +46,4 @@ t_bool	rrr(t_stack *s1, t_stack *s2)
 	stack_rrotate(s2);
 	print_sort_op(op_rrr);
 	return (TRUE);
-}
-
-void	rrr_n(t_stack *s1, t_stack *s2, size_t n)
-{
-	while (n--)
-		rrr(s1, s2);
 }

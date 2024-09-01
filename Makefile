@@ -1,27 +1,33 @@
 NAME = push_swap
-CFLAGS = -Wall -Wextra -Werror -O3 -flto
-# CFLAGS = -Wall -Wextra -Werror -g -Og
+# CFLAGS = -Wall -Wextra -Werror -O3
+CFLAGS = -Wall -Wextra -Werror -g -Og
 
 LIBFTDIR = libft
 
 SRCS = \
-	main.c\
-	sort.c\
-	sort2.c\
-	sort3.c\
-	chunk.c\
-	stack/stack.c\
-	stack/stack_at.c\
-	stack/stack_clear.c\
-	stack/stack_push_pop.c\
-	stack/stack_rotate.c\
-	stack/stack_parse.c\
-	stack/stack_new.c\
 	stack/ops/op_convert.c\
 	stack/ops/op_push.c\
 	stack/ops/op_rotate.c\
-	stack/ops/op_swap.c\
 	stack/ops/op_rrotate.c\
+	stack/ops/op_rrotate2.c\
+	stack/ops/op_swap.c\
+	stack/stack_at.c\
+	stack/stack_clear.c\
+	stack/stack_min_max.c\
+	stack/stack_new.c\
+	stack/stack_push_pop.c\
+	stack/stack_rotate.c\
+	stack/stack.c\
+	chunk_push.c\
+	chunk_sort2.c\
+	chunk_sort3.c\
+	chunk.c\
+	main.c\
+	sort.c\
+	stack_parse.c\
+	stack_sort.c\
+	stack_sort3.c\
+	stack_sort5.c\
 
 OBJ = $(SRCS:.c=.o)
 

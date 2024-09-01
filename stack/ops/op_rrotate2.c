@@ -1,31 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   stack_clear.c                                      :+:      :+:    :+:   */
+/*   op_rrotate2.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kwurster <kwurster@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/01 17:36:39 by kwurster          #+#    #+#             */
-/*   Updated: 2024/09/01 17:36:40 by kwurster         ###   ########.fr       */
+/*   Created: 2024/09/01 18:01:43 by kwurster          #+#    #+#             */
+/*   Updated: 2024/09/01 18:02:09 by kwurster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "stack.h"
-#include <stdlib.h>
+#include "../stack.h"
 
-void	stack_clear(t_stack	*stack)
+void	rrx_n(t_stack *s, size_t n)
 {
-	t_node	*node;
+	while (n--)
+		rrx(s);
+}
 
-	if (stack->head == 0)
-		return ;
-	node = stack->head;
-	while (node->next != stack->head)
-	{
-		node = node->next;
-		free(node->prev);
-	}
-	free(node);
-	stack->head = 0;
-	stack->len = 0;
+void	rrr_n(t_stack *s1, t_stack *s2, size_t n)
+{
+	while (n--)
+		rrr(s1, s2);
 }

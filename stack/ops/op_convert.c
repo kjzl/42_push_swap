@@ -6,7 +6,7 @@
 /*   By: kwurster <kwurster@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 17:36:25 by kwurster          #+#    #+#             */
-/*   Updated: 2024/09/01 18:03:30 by kwurster         ###   ########.fr       */
+/*   Updated: 2024/09/02 14:38:35 by kwurster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,8 @@
 
 const char	*sort_op_str(t_sort_op op)
 {
-	static const char *const	op_strs[] = {"", "sa", "sb", "ss", "pa", "pb", "ra",
-		"rb", "rr", "rra", "rrb", "rrr"};
+	static const char *const	op_strs[] = {"", "sa", "sb", "ss", "pa", "pb",
+		"ra", "rb", "rr", "rra", "rrb", "rrr"};
 
 	return (op_strs[op]);
 }

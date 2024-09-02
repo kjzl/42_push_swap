@@ -40,9 +40,6 @@ $(NAME): $(OBJ)
 	$(MAKE) -C $(LIBFTDIR) CFLAGS='$(CFLAGS)'
 	cc $(CFLAGS) $(OBJ) -L$(LIBFTDIR) -lft -o $(NAME)
 
-# bonus: CFLAGS += -DBONUS
-# bonus: all
-
 clean:
 	$(MAKE) -C $(LIBFTDIR) clean
 	rm -f $(OBJ)

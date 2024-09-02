@@ -6,7 +6,7 @@
 /*   By: kwurster <kwurster@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 13:58:53 by kwurster          #+#    #+#             */
-/*   Updated: 2024/09/01 18:08:19 by kwurster         ###   ########.fr       */
+/*   Updated: 2024/09/02 14:37:36 by kwurster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,20 +104,13 @@ size_t		node_rdist(t_stack *s, t_entry n);
 t_node		*node_by_val(const t_stack *stack, int32_t val);
 t_node		*node_at(const t_stack *stack, size_t index);
 t_node		*node_at_slow(const t_stack *stack, size_t index);
-t_node		*node_top(const t_stack *stack);
-t_node		*node_bottom(const t_stack *stack);
-t_node		*node_top_next(const t_stack *stack);
-t_node		*node_bottom_prev(const t_stack *stack);
 
 t_stack		stack_new(t_stack_id id);
 t_stack		stack_from_vec(t_vec *vec, t_stack_id id);
-
 t_bool		stack_is_sorted(t_stack *s, t_bool at_head, size_t n);
-
 void		stack_push(t_stack *stack, t_node *node);
 t_bool		stack_pushv(t_stack *stack, int32_t val, uint32_t target_pos);
 t_node		*stack_pop(t_stack *stack);
-int32_t		stack_popv(t_stack *stack);
 void		node_swapv(t_node *a, t_node *b);
 void		stack_clear(t_stack	*stack);
 void		stack_rrotate(t_stack *stack);
